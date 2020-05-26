@@ -55,4 +55,24 @@ div.popup {
     cursor: pointer;  
   }
 }
+
+a.button {
+  background-color: #C95925;
+  box-shadow: 2px 2px 10px rgba(0,0,0,.25);
+  color: white;
+  border-radius: 3px;
+  padding: 6px 35px;
+  text-decoration: none;
+  margin-right: 30px;
+
+  &.secondary {
+    background-color: #C4C4C4;
+    color: black;
+  }
+
+  &.disabled {
+    filter: opacity(.6);
+    cursor: not-allowed;
+  }
+}
 </style>
