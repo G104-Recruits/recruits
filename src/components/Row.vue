@@ -1,14 +1,15 @@
 <template>
   <div class="row">
     <div class="content">
-      <div class="icon"><div class="image" :style="{backgroundImage: 'url('+data.image+')'}"></div></div>
+      <div class="icon"><div class="image" v-if="!project" :style="{backgroundImage: 'url('+$root.getUserImage(data)+')'}"></div></div>
       <div class="data">
-        <p class="first_line"><span class="name">{{ data.name }}</span><span class="qualifications">{{ subheader }}</span></p>
-        <p class="desc">{{ data.desc }}</p>
-        <a :href="''+data.id" class="button">Ver Mais</a>
+        <p class="first_line"><span class="name">{{ data.nome }}</span><span class="qualifications">{{ subheader }}</span></p>
+        <p class="desc">{{ data.bio }}</p>
+        <a :href="'#/user/'+data.id" class="button" v-if="!project">Ver Mais</a>
+        <a :href="'#/project/'+data.id" class="button" v-if="project">Ver Mais</a>
         <a :href="''+data.id" class="button secondary disabled" v-if="project">Participar</a>
         <span class="users" v-if="project">
-          <span class="user" v-for="user in data.users" :key="user" :style="{backgroundImage: 'url('+user.image+')'}"></span>
+          <span class="user" v-for="user in data.users" :key="user" :style="{backgroundImage: 'url('/*+user.image*/+')'}"></span>
         </span>
       </div>
     </div>
@@ -25,9 +26,9 @@ export default {
   computed: {
     subheader: function() {
       if (this.project)
-        return '';
+        return '';/*
       else
-        return this.data.qualifications.join(', ');
+        return this.data.qualifications.join(', ');*/
     }
   }
 }

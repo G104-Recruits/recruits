@@ -17,7 +17,7 @@
 
     <div class="profile_image shadow right" v-if="$root.auth.loggedin" :style="{'background-image': 'url('+$root.getUserImage()+')'}"></div>
 
-    <div class="popup" v-if="$root.auth.loggedin">
+    <div id="menu" class="popup" v-if="$root.auth.loggedin">
       <div class="black"></div>
       <div class="burger shadow">
         <img src="@/assets/logo.png" alt="">
@@ -31,10 +31,9 @@
         </div>
 
         <div class="link_area">
-          <p>Meu Perfil</p>
-          <p class="active">Meus Projetos</p>
-          <p>Encontrar Projetos</p>
-          <p>Encontrar Pessoas</p>
+          <router-link to="/user"><p :class="{active: ($route.path == '/user')}">Meu Perfil</p></router-link>
+          <router-link to="/search/0"><p :class="{active: ($route.path == '/search/0')}">Encontrar Projetos</p></router-link>
+          <router-link to="/search/1"><p :class="{active: ($route.path == '/search/1')}">Encontrar Pessoas</p></router-link>
         </div>
         <div class="link_area">
           <p>Definições</p>
@@ -52,8 +51,11 @@ export default {
   name: "Nav",
   methods: {
     openBurger: function() {
-      $('div.popup').toggleClass('open');
+      $('div#menu.popup').addClass('open');
     }
+  },
+  mounted() {
+    this.$root.preparePopUps();
   }
 }
 </script>
@@ -190,6 +192,11 @@ div#nav {
 
       div.link_area {
         border-top: 1px solid black;
+
+        a {
+          color: black;
+          text-decoration: none;
+        }
 
         p {
           text-align: left;

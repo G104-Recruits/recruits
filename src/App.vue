@@ -14,12 +14,6 @@ export default {
   name: 'Home',
   components: {
     Nav
-  },
-  mounted() {
-    $('div.black').click(function(event) {
-      $(event.target).closest('div.popup').toggleClass('open');
-      $(event.target).fadeOut();
-    });
   }
 }
 </script>
@@ -38,6 +32,7 @@ div.popup {
   top: 0;
   left: 0;
   position: fixed;
+  z-index: 10;
 
   &:not(.open) {
     div.black {
@@ -64,6 +59,7 @@ a.button {
   padding: 6px 35px;
   text-decoration: none;
   margin-right: 30px;
+  cursor: pointer;
 
   &.secondary {
     background-color: #C4C4C4;
