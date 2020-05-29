@@ -5,7 +5,7 @@
       <p>Pesquise por nome aqui ou vá à página de <a href="">busca avançada</a></p>
   	  <div class="search">
         <input type="text">
-        <a href="" class="button">Procurar</a>
+        <a href="" class="button"><font-awesome-icon icon="search" size="sm" />Procurar</a>
       </div>
       <div class="divider">
         <span class="line"></span>
@@ -17,6 +17,7 @@
 </template>
 
 <script>
+
 export default {
   name: 'Home'
 }
@@ -79,6 +80,10 @@ div.top {
       float: right;
       margin: 0;
       box-shadow: none;
+
+      svg {
+        margin-right: 15px;
+      }
     }
   }
 
