@@ -4,11 +4,11 @@ import router from './router'
 import $ from 'jquery'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faBars } from '@fortawesome/free-solid-svg-icons'
+import { faBars, faSearch, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add([faBars, faGithub])
+library.add([faBars, faSearch, faGithub, faPlus])
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
@@ -29,7 +29,7 @@ new Vue({
       var vm = this;
 
       $.ajax({
-        url: "http://localhost/RecruitsAPI/get_users.php",
+        url: "https://masrecruits.000webhostapp.com/api/get_users.php",
         dataType: "json",
         async: false,
         success: data => {
@@ -42,16 +42,29 @@ new Vue({
         }
       });
     },
-    getUserImage() {
-      var l = this.auth.user.ligacoes;
+    getUserImage: function(user = false) {
+      if (user === false)
+        user = this.auth.user
+      return this.getLigacao("Image", user);
+    },
+    getLigacao: function(nome, user = false) {
+      if (user === false)
+        user = this.auth.user
+      
+      var l = user.ligacoes;
       for (var i=0; i<l.length; i++)
-        if (l[i].nome == "Image")
+        if (l[i].nome == nome)
           return l[i].valor;
     },
-    logout() {
+    logout: function() {
       this.$set(this.auth, 'user', {});
       this.$set(this.auth, 'loggedin', false);
-      //this.$router.go();
+    },
+    preparePopUps: function () {
+      $('div.black').click(function(event) {
+        $(event.target).closest('div.popup').removeClass('open');
+        $(event.target).fadeOut();
+      });
     }
   },
   beforeMount() {
