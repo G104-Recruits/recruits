@@ -1,5 +1,5 @@
 <template>
-  <div class="create">
+  <div class="create" style="text-align: center;">
     <form id="createProject" class="shadow">
       <h1>Crie um novo projeto...</h1>
 
