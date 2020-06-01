@@ -56,24 +56,18 @@ export default {
       });
     },
     search() {
-      if (this.type())
+      if (this.params.projeto)
         this.searchProjects();
       else
         this.searchUsers();
     },
     updateType: function(newValue) {
-      alert(newValue);
       this.$set(this.params, 'projeto', newValue);
     },
     type: function(value=false) {
-      if (value !== false) {
-        if (value != 1) {
-          return true;
-        }
-        return false;
-      }
-      
-      return this.params.projeto;
+      if (value !== false)
+        return value != 1;
+      return this.$route.params.type != 1;
     }
   },
   beforeMount: function() {
@@ -82,7 +76,6 @@ export default {
   },
   beforeRouteUpdate (to, from, next) {
     this.updateType(this.type(to.params.type));
-    alert(this.type());
     this.search();
     next();
   },

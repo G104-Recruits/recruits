@@ -65,6 +65,14 @@ new Vue({
         $(event.target).closest('div.popup').removeClass('open');
         $(event.target).fadeOut();
       });
+    },
+    joinProject: function (projectId) {
+      $.ajax({
+        url: "https://masrecruits.000webhostapp.com/api/join_project.php",
+        data: {
+          projectId: projectId
+        }
+      });
     }
   },
   beforeMount() {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Top :data="data.user" :project="false" :diffUser="diffUser" :btnClick="openPopUp" />
+    <Top :data="data.user" :project="false" :diffUser="diffUser" :btnClickConvidar="openConvidarPopUp" />
     <div class="menu">
       <div class="left">
         <div class="item active">Projetos</div>
@@ -17,7 +17,7 @@
     <div id="invite" class="popup">
       <div class="black"></div>
       <div class="content">
-
+        <p v-for="project in inviteableProjects()" :key="project.id">{{ project.nome }}</p>
       </div>
     </div>
   </div>
@@ -41,7 +41,7 @@ export default {
     }
   },
   methods: {
-    openPopUp: function() {
+    openConvidarPopUp: function() {
       $('div#invite.popup').addClass('open');
     },
     getData: function() {
@@ -51,10 +51,51 @@ export default {
         data: {
           id: vm.curId
         },
+        async: false,
         method: 'GET',
         dataType: 'json',
         success: function(data) {
           vm.$set(vm.data, 'user', data);
+        }
+      });
+    },
+    invite: function(projectId) {
+      var vm = this;
+
+      $.ajax({
+        url: "https://masrecruits.000webhostapp.com/api/join_project.php",
+        data: {
+          projectId: projectId,
+          userId: vm.$route.params.id
+        }
+      });
+    },
+    inviteableProjects: function() {
+      var vm = this;
+      var projetos = [];
+
+      $.ajax({
+        url: "https://masrecruits.000webhostapp.com/api/get_projects.php",
+        data: {
+          userId: vm.$root.auth.user.id,
+          role: 1
+        },
+        async: false,
+        success: data => {
+          projetos = data;
+        }
+      });
+
+      return projetos;
+    },
+    userProjects: function() {
+      var vm = this;
+
+      $.ajax({
+        url: "https://masrecruits.000webhostapp.com/api/get_projects.php",
+        data: {
+          userId: vm.curId,
+          role: 1
         }
       });
     }
@@ -74,9 +115,10 @@ export default {
       return true;
     }
   },
-  mounted() {
+  beforeMount() {
     this.$root.preparePopUps();
     this.getData();
+    console.log(this.data.user);
   }
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Top :data="data" :project="true" />
+    <Top :data="data" :privdata="privdata" :project="true" />
     <div class="menu" v-if="isPart">
       <div class="left">
         <div class="item active">Tarefas</div>
@@ -12,6 +12,9 @@
       </div>
     </div>
     <div class="menu" v-if="!isPart">
+      <div class="left">
+        <div class="item active">Junte-se a este projeto...</div>
+      </div>
       <div class="right">
         <a class="button secondary">Participar</a>
       </div>
@@ -28,7 +31,12 @@ export default {
   name: "Project",
   data: function() {
     return {
-      data: {}
+      data: {},
+      privdata: {
+        tasks: [],
+        colabs: [],
+        notes: []
+      }
     }
   },
   components: {
@@ -45,17 +53,13 @@ export default {
         },
         method: 'GET',
         success: function(data) {
-          vm.$set(vm, 'data', data);
+          vm.$set(vm.data, 'public', data);
         }
       });
-
+      
       this.getTasks();
       this.getColabs();
       this.getNotes();
-
-      console.log(this.data.tasks);
-      console.log(this.data.colabs);
-      console.log(this.data.notes);
     },
     getTasks: function() {
       var vm = this;
@@ -67,7 +71,7 @@ export default {
         },
         method: 'GET',
         success: function(data) {
-          vm.$set(vm.data, 'tasks', data);
+          vm.$set(vm.privdata, 'tasks', data);
         }
       });
     },
@@ -81,7 +85,7 @@ export default {
         },
         method: 'GET',
         success: function(data) {
-          vm.$set(vm.data, 'colabs', data);
+          vm.$set(vm.privdata, 'colabs', data);
         }
       });
     },
@@ -95,7 +99,7 @@ export default {
         },
         method: 'GET',
         success: function(data) {
-          vm.$set(vm.data, 'notes', data);
+          vm.$set(vm.privdata, 'notes', data);
         }
       });
     }
@@ -105,8 +109,8 @@ export default {
   },
   computed: {
     isPart: function() {
-      for(var i=0;i<this.data.colabs.length;i++)
-        if(this.data.colabs[i].id === this.$root.user.id)
+      for(var i=0;i<this.privdata.colabs.length;i++)
+        if(this.privdata.colabs[i].id === this.$root.auth.user.id)
           return true;
       return false;
     }
@@ -114,7 +118,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>div.menu {
+<style lang="scss" scoped>
+div.menu {
   width: 100%;
   background-color: #C95925;
 
@@ -140,6 +145,10 @@ export default {
 
         svg {
           padding: 20px 0;
+        }
+
+        a {
+          line-height: 50px;
         }
       }
     }

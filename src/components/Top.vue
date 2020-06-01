@@ -1,10 +1,11 @@
 <template>
   <div class="profiletop">
     <div class="action">
-      <div class="image" :style="{backgroundImage: 'url('+$root.getUserImage(data)+')'}" v-if="!project"></div>
-      <a :href="$root.getLigacao('GitHub', data)" target="_blank" class="button secondary" v-if="!project">GitHub</a>
-      <a class="button secondary" v-if="!project && diffUser" v-on:click="btnClick()">Convidar</a>
-      <a class="button secondary" v-if="project" v-on:click="btnClick()">Pedidos</a>
+      <div class="image" v-if="!project" :style="{backgroundImage: 'url('+$root.getUserImage(data)+')'}"></div>
+      <a v-if="!project" :href="$root.getLigacao('GitHub', data)" target="_blank" class="button secondary">GitHub</a>
+      <a class="button secondary" v-if="!project && diffUser" v-on:click="btnClickConvidar()">Convidar</a>
+      <a class="button secondary" v-if="!project && !diffUser" v-on:click="btnClickConvites()">Convites</a>
+      <a class="button secondary" v-if="project" v-on:click="btnClickPedidos()">Pedidos</a>
     </div>
     <div class="info">
       <h1>{{data.nome}}</h1>
@@ -17,8 +18,8 @@
       </ul>
 
       <ul v-if="project">
-        <li><b>Número de participantes:</b> {{ data.colabs.length }}</li>
-        <li><b>Número de Tasks por Concluir:</b> {{ data.tasks.length }}</li>
+        <li><b>Número de participantes:</b> {{ privdata.colabs.length }}</li>
+        <li><b>Número de Tasks por Concluir:</b> {{ privdata.tasks.length }}</li>
         <li><b>Última task concluída:</b> {{ data.dataCriacao }}</li>
       </ul>
     </div>
@@ -30,9 +31,12 @@ export default {
   name: "Top",
   props: {
     data: Object,
+    privdata: Object,
     project: Boolean,
     diffUser: Boolean,
-    btnClick: Function
+    btnClickConvidar: Function,
+    btnClickConvites: Function,
+    btnClickPedidos: Function
   }
 }
 </script>
