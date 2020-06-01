@@ -19,11 +19,14 @@
         <a class="button secondary">Participar</a>
       </div>
     </div>
+
+    <Task v-for="task in privdata.colabs" :key="task" />
   </div>
 </template>
 
 <script>
 import Top from '@/components/Top.vue'
+import Card from '@/components/Card.vue'
 
 import $ from 'jquery'
 
@@ -40,7 +43,7 @@ export default {
     }
   },
   components: {
-    Top
+    Top, Card
   },
   methods: {
     getProject: function() {

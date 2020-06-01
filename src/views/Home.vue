@@ -13,11 +13,11 @@
       </div>
       <a href="" class="button fill">CRIE UM PROJETO</a>
     </div>
+    <Card/>
   </div>
 </template>
 
 <script>
-
 export default {
   name: 'Home'
 }

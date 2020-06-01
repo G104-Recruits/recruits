@@ -13,6 +13,10 @@
         </router-link>
       </div>
     </div>
+    
+    <div class="projects">
+      <Card v-for="project in userProjects()" :project="true" :data="project" :key="project.id" />
+    </div>
 
     <div id="invite" class="popup">
       <div class="black"></div>
@@ -25,13 +29,14 @@
 
 <script>
 import Top from '@/components/Top.vue'
+import Card from '@/components/Card.vue'
 
 import $ from 'jquery'
 
 export default {
   name: "Profile",
   components: {
-    Top
+    Top, Card
   },
   data: function() {
     return {
@@ -90,14 +95,21 @@ export default {
     },
     userProjects: function() {
       var vm = this;
+      var result = [];
 
       $.ajax({
         url: "https://masrecruits.000webhostapp.com/api/get_projects.php",
         data: {
           userId: vm.curId,
-          role: 1
+          role: 0
+        },
+        async: false,
+        success: function(data) {
+          result = data
         }
       });
+
+      return result;
     }
   },
   computed: {
@@ -118,7 +130,6 @@ export default {
   beforeMount() {
     this.$root.preparePopUps();
     this.getData();
-    console.log(this.data.user);
   }
 }
 </script>
@@ -171,6 +182,34 @@ div.menu {
       &:not(.active):hover {
         opacity: .8;
       }
+    }
+  }
+}
+
+div.projects {
+  display: flex;
+
+  & > div {
+    margin: 10px;
+  }
+}
+
+div.popup {
+  width: 100%;
+  height: 100%;
+
+  div.content {
+    display: none;
+  }
+
+  &.open {
+    div.content {
+      display: block;
+      background-color: white;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
   }
 }
