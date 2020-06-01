@@ -1,5 +1,5 @@
 <template>
-  <div class="create" style="text-align: center;">
+  <div class="create">
     <form id="createProject" class="shadow">
       <h1>Crie um novo projeto...</h1>
 
@@ -63,6 +63,7 @@ form {
   width: 30%;
   max-width: 400px;
   padding: 10px;
+  text-align: center;
 
   h1 {
     font-weight: 500;
