@@ -63,7 +63,6 @@ form {
   width: 30%;
   max-width: 400px;
   padding: 10px;
-  text-align: center;
 
   h1 {
     font-weight: 500;
