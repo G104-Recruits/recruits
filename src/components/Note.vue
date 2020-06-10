@@ -1,12 +1,12 @@
 <template>
   <div class="nota">
-      <img :src="data.image" class="profilepic">
+      <img :src="$root.getUserImage(data.user)" class="profilepic">
       <div class="content">
           <div class="header">
-              <p class="usertitle">{{data.name}} <span class="lighttext">disse:</span></p>
-              <p class="date">{{data.date}}</p>
+              <p class="usertitle">{{data.user.nome}} <span class="lighttext">disse:</span></p>
+              <p class="date">{{data.dataCriacao}}</p>
           </div>
-          <p class="usermessage lighttext">{{data.message}}</p>    
+          <p class="usermessage lighttext">{{data.valor}}</p>    
       </div>
   </div>
 </template>
@@ -16,6 +16,9 @@ export default {
   name: "Note",
   props: {
     data: Object
+  },
+  mounted() {
+    console.log(this.data);
   }
 }
 </script>
@@ -33,7 +36,7 @@ export default {
   margin-top: 30px;
 }
 
-.profilepic {
+img.profilepic {
   border-radius: 100%; 
   width: 75px; 
   height: 75px; 
@@ -42,7 +45,7 @@ export default {
   top: -15px; 
 }
 
-.usertitle {
+p.usertitle {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; 
   font-style: normal; 
   font-weight: normal; 
@@ -51,7 +54,7 @@ export default {
   margin-left: 45px;
 }
 
-.date {
+p.date {
   float: right; 
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; 
   font-style: normal; 
@@ -60,7 +63,7 @@ export default {
   line-height: 25px;
 }
 
-.usermessage {
+p.usermessage {
   margin-top: 5px; 
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; 
   font-style: normal; 
@@ -68,6 +71,7 @@ export default {
   font-size: 18px; 
   line-height: 20px; 
   margin-left: 45px;
+  word-break: break-all;
 }
 
 .lighttext {

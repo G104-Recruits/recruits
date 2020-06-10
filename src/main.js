@@ -9,7 +9,6 @@ import { faGithub } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 library.add([faBars, faSearch, faGithub, faPlus])
-
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.config.productionTip = false
@@ -21,7 +20,9 @@ new Vue({
       auth: {
         user: {},
         loggedin: false 
-      }
+      },
+      apiPath: "https://masrecruits.000webhostapp.com/api/",
+      clientIds: ["9295e459fd68392e0fa6", "bf3d8fb7fa3c22212ce2"]
     }
   },
   methods: {
@@ -29,7 +30,7 @@ new Vue({
       var vm = this;
 
       $.ajax({
-        url: "https://masrecruits.000webhostapp.com/api/get_users.php",
+        url: this.apiPath + "get_users.php",
         dataType: "json",
         async: false,
         success: data => {
@@ -67,16 +68,43 @@ new Vue({
       });
     },
     joinProject: function (projectId) {
+      var vm = this;
+
       $.ajax({
-        url: "https://masrecruits.000webhostapp.com/api/join_project.php",
+        url: this.apiPath + "join_project.php",
         data: {
           projectId: projectId
+        },
+        complete: function() {
+          vm.$router.go();
         }
       });
-    }
+    },
+    invite: function(projectId, userId) {
+      var vm = this;
+
+      $.ajax({
+        url: vm.$root.apiPath + "join_project.php",
+        data: {
+          projectId: projectId,
+          userId: userId
+        },
+        complete: function() {
+          vm.$router.go();
+        }
+      });
+    },
   },
   beforeMount() {
-    this.login();
+    this.login();   
+
+    this.$router.beforeEach((to, from, next) => {
+      if (!this.auth.loggedin && to.path != "/") alert("Faça login primeiro!")
+      else next()
+    });
+
+    if ((!this.auth.loggedin) && (this.$route.path != "/"))
+      this.$router.push({path:"/"});
   },
   render: h => h(App)
 }).$mount('#app')

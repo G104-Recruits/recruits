@@ -4,7 +4,7 @@
       <h1>Encontre o {{params.projeto?'projeto':'colaborador'}} ideal!</h1>
       <div class="search">
         <input type="text">
-        <a href="" class="button"><font-awesome-icon icon="search" size="sm" />Procurar</a>
+        <a v-on:click="search(true)" class="button"><font-awesome-icon icon="search" size="sm" />Procurar</a>
       </div>
     </div>
     
@@ -35,31 +35,41 @@ export default {
     }
   },
   methods: {
-    searchProjects: function() {
+    searchProjects: function(search) {
       var vm  = this;
 
       $.ajax({
-        url:  "https://masrecruits.000webhostapp.com/api/get_projects.php",
+        url:  vm.$root.apiPath + "get_projects.php",
+        data: {
+          search: search
+        },
         success: function(data) {
           vm.$set(vm, 'results', data);
         }
       });
     },
-    searchUsers: function() {
+    searchUsers: function(search) {
       var vm  = this;
 
       $.ajax({
-        url:  "https://masrecruits.000webhostapp.com/api/get_users.php?all",
+        url:  vm.$root.apiPath + "get_users.php",
+        data: {
+          all: '',
+          search: search
+        },
         success: function(data) {
           vm.$set(vm, 'results', data);
         }
       });
     },
-    search() {
+    search(search='') {
+      if (search == true)
+        search = $("input").val();
+
       if (this.params.projeto)
-        this.searchProjects();
+        this.searchProjects(search);
       else
-        this.searchUsers();
+        this.searchUsers(search);
     },
     updateType: function(newValue) {
       this.$set(this.params, 'projeto', newValue);
@@ -78,7 +88,7 @@ export default {
     this.updateType(this.type(to.params.type));
     this.search();
     next();
-  },
+  }
 }
 </script>
 

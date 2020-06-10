@@ -1,12 +1,13 @@
 <template>
   <div id="app">
     <Nav />
-    <router-view/>
+    <transition enter-active-class="animate__animated animate__fadeIn">
+      <router-view/>
+    </transition>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
 import Nav from '@/components/Nav.vue'
 import $ from 'jquery'
 

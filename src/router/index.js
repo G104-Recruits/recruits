@@ -16,7 +16,7 @@ Vue.use(VueRouter)
   },
   {
     path: '/user',
-    name: 'Profile',
+    name: 'My Profile',
     component: Profile
   },
   {

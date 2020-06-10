@@ -1,13 +1,14 @@
 <template>
-  <div class="card">
+  <div class="card shadow">
     <div class="container">
       <h4 style="font-weight:500">{{ data.nome }}</h4> 
-      <h6 class="h6" style="color: #C4C4C4">Por <span class="span" style="color:#C95925">Nuno Fahla</span></h6> 
-      <p>{{ data.bio }}</p>
-      <h6 class="h6" style="color: #C95925">Terminado</h6>
-      <h6 class="h6" style="color: #C4C4C4">Última atualização em 10/10/2010</h6>
+      <h6 v-if="!project" class="h6" style="color: #C4C4C4">Por <span class="span" style="color:#C95925">{{ data.notas[0].user.nome }}</span></h6> 
+      <p v-if="project">{{ data.bio }}</p>
+      <p v-if="!project">{{ data.notas[0].valor }}</p>
+      <h6 class="h6" style="color: #C95925">{{ (data.estado == 0)? "Em Progresso" : "Terminado"}}</h6>
+      <h6 v-if="!project" class="h6" style="color: #C4C4C4">Última atualização em {{ data.notas[data.notas.length-1].dataCriacao }}</h6>
       <div style="text-align: center">
-        <a v-if="!project"  href="" class="button secondary">Ver Detalhes</a>
+        <a v-if="!project" v-on:click="detalhesFun()" class="button secondary">Ver Detalhes</a>
         
         <a v-if="project" :href="'#/project/'+data.id" class="button">Ver Mais</a>
         <a v-if="project"  href="" class="button secondary disabled">Participar</a>
@@ -21,14 +22,14 @@ export default {
   name: "Card",
   props: {
     project: Boolean,
-    data: Object
+    data: Object,
+    detalhesFun: Function
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .card {
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,25);
     transition: 0.3s;
     width: 300px;
     left: 19px;
@@ -50,8 +51,13 @@ export default {
   font-weight: normal;
 }
 
-.h6, .span {
+h4 {
+  margin: 0;
+}
+
+.h6 {
     font-weight: normal;
+    margin-top: 0;
 }
 
 .parent {
@@ -69,6 +75,10 @@ export default {
 
 a.button {
   margin: 0;
+}
+
+p {
+  word-break: break-all;
 }
 </style>
 

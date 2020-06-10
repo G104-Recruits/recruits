@@ -1,7 +1,7 @@
 <template>
   <div class="user">
-      <img :src="data.image" class="profilepic">
-      <p>{{data.name}}</p>
+      <img :src="$root.getUserImage(data)" class="profilepic">
+      <p>{{data.nome}}</p>
       <button class="mybutton"></button>
   </div>
 </template>
@@ -36,7 +36,7 @@ p {
   height: 50px; 
   display: inline-block; 
   position: relative;
-  margin-left: 40px;
+  margin: 10px 40px;
 }
 
 .profilepic {
@@ -47,7 +47,6 @@ p {
   box-shadow: 2px 2px 10px rgba(0,0,0,.25);
   top: -3px;
   left: 0;
-  z-index: 10;
 }
 
 .mybutton {

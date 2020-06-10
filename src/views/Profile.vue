@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Top :data="data.user" :project="false" :diffUser="diffUser" :btnClickConvidar="openConvidarPopUp" />
+    <Top :data="data.user" :project="false" :diffUser="diffUser" :btnClickConvidar="openConvidarPopUp" :btnClickConvites="openConvitesPopUp" />
     <div class="menu">
       <div class="left">
         <div class="item active">Projetos</div>
@@ -21,7 +21,14 @@
     <div id="invite" class="popup">
       <div class="black"></div>
       <div class="content">
-        <p v-for="project in inviteableProjects()" :key="project.id">{{ project.nome }}</p>
+        <div v-for="project in inviteableProjects()" :key="project.id"><p>{{ project.nome }}</p><a class="button secondary" :class="{disabled: alreadyInvited(project)}" v-on:click="$root.invite(project.id, $route.params.id)">Convidar</a></div>
+      </div>
+    </div>
+
+    <div id="invites" class="popup">
+      <div class="black"></div>
+      <div class="content">
+        <div v-for="project in data.invites" :key="project.id"><p>{{ project.nome }}</p><a class="button secondary" v-on:click="$root.joinProject(project.id)">Aceitar</a></div>
       </div>
     </div>
   </div>
@@ -41,7 +48,8 @@ export default {
   data: function() {
     return {
       data: {
-        user: {}
+        user: {},
+        invites: {}
       }
     }
   },
@@ -49,12 +57,18 @@ export default {
     openConvidarPopUp: function() {
       $('div#invite.popup').addClass('open');
     },
-    getData: function() {
+    openConvitesPopUp: function() {
+      $('div#invites.popup').addClass('open');
+    },
+    getData: function(id=false) {
+      if (id === false)
+        id = this.curId;
+
       var vm = this;
       $.ajax({
-        url: 'https://masrecruits.000webhostapp.com/api/get_users.php',
+        url: vm.$root.apiPath + 'get_users.php',
         data: {
-          id: vm.curId
+          id: id
         },
         async: false,
         method: 'GET',
@@ -63,42 +77,47 @@ export default {
           vm.$set(vm.data, 'user', data);
         }
       });
-    },
-    invite: function(projectId) {
-      var vm = this;
 
-      $.ajax({
-        url: "https://masrecruits.000webhostapp.com/api/join_project.php",
-        data: {
-          projectId: projectId,
-          userId: vm.$route.params.id
-        }
-      });
+      this.getUserInvites(id);
     },
     inviteableProjects: function() {
       var vm = this;
-      var projetos = [];
+      var result = [];
 
       $.ajax({
-        url: "https://masrecruits.000webhostapp.com/api/get_projects.php",
+        url: vm.$root.apiPath + "get_projects.php",
         data: {
           userId: vm.$root.auth.user.id,
           role: 1
         },
         async: false,
         success: data => {
-          projetos = data;
+          result = data;
         }
       });
 
-      return projetos;
+      return result;
+    },
+    getUserInvites: function(id) {
+      var vm = this;
+
+      $.ajax({
+        url: vm.$root.apiPath + "get_invites.php",
+        data: {
+          userId: id
+        },
+        async: false,
+        success: data => {
+          vm.$set(vm.data, 'invites', data);
+        }
+      });
     },
     userProjects: function() {
       var vm = this;
       var result = [];
 
       $.ajax({
-        url: "https://masrecruits.000webhostapp.com/api/get_projects.php",
+        url: vm.$root.apiPath + "get_projects.php",
         data: {
           userId: vm.curId,
           role: 0
@@ -110,6 +129,12 @@ export default {
       });
 
       return result;
+    },
+    alreadyInvited(project) {
+      for (var i=0;i<this.data.invites.length;i++)
+        if (this.data.invites[i].id === project.id)
+          return true;
+      return false;
     }
   },
   computed: {
@@ -128,8 +153,15 @@ export default {
     }
   },
   beforeMount() {
-    this.$root.preparePopUps();
     this.getData();
+  },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      vm.getData();
+    })
+  },
+  mounted() {
+    this.$root.preparePopUps();
   }
 }
 </script>
@@ -197,20 +229,30 @@ div.projects {
 div.popup {
   width: 100%;
   height: 100%;
-
-  div.content {
-    display: none;
-  }
+  display: none;
 
   &.open {
-    div.content {
-      display: block;
-      background-color: white;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
+    display: block;
+  }
+
+  div.content {
+    background-color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+div.projects {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  padding: 0 20px;
+  
+  & > div {
+    flex-grow: 1;
   }
 }
 </style>

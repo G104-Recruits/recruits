@@ -2,18 +2,17 @@
   <div class="home">
     <div class="top">
       <h1>ENCONTRE O PROJETO IDEAL</h1>
-      <p>Pesquise por nome aqui ou vá à página de <a href="">busca avançada</a></p>
+      <p>Pesquise por nome aqui ou vá à página de <a href="#/search/0">busca avançada</a></p>
   	  <div class="search">
         <input type="text">
-        <a href="" class="button"><font-awesome-icon icon="search" size="sm" />Procurar</a>
+        <a href="#/search/0" class="button"><font-awesome-icon icon="search" size="sm" />Procurar</a>
       </div>
       <div class="divider">
         <span class="line"></span>
         <span class="text">OU</span>
       </div>
-      <a href="" class="button fill">CRIE UM PROJETO</a>
+      <a href="#/create" class="button fill">CRIE UM PROJETO</a>
     </div>
-    <Card/>
   </div>
 </template>
 

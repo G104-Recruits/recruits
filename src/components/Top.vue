@@ -5,7 +5,7 @@
       <a v-if="!project" :href="$root.getLigacao('GitHub', data)" target="_blank" class="button secondary">GitHub</a>
       <a class="button secondary" v-if="!project && diffUser" v-on:click="btnClickConvidar()">Convidar</a>
       <a class="button secondary" v-if="!project && !diffUser" v-on:click="btnClickConvites()">Convites</a>
-      <a class="button secondary" v-if="project" v-on:click="btnClickPedidos()">Pedidos</a>
+      <a class="button secondary" v-if="project && isPart" v-on:click="btnClickPedidos()">Pedidos</a>
     </div>
     <div class="info">
       <h1>{{data.nome}}</h1>
@@ -18,7 +18,7 @@
       </ul>
 
       <ul v-if="project">
-        <li><b>Número de participantes:</b> {{ privdata.colabs.length }}</li>
+        <li><b>Número de participantes:</b> {{ colabsActive.length }}</li>
         <li><b>Número de Tasks por Concluir:</b> {{ privdata.tasks.length }}</li>
         <li><b>Última task concluída:</b> {{ data.dataCriacao }}</li>
       </ul>
@@ -32,11 +32,22 @@ export default {
   props: {
     data: Object,
     privdata: Object,
+    isPart: Boolean,
     project: Boolean,
     diffUser: Boolean,
     btnClickConvidar: Function,
     btnClickConvites: Function,
     btnClickPedidos: Function
+  },
+  computed: {
+    colabsActive: function() {
+      var colabs = [];
+      for (var i=0; i<this.privdata.colabs.length;i++)
+        if (this.privdata.colabs[i].papel != null)
+          colabs.push(this.privdata.colabs[i]);
+
+      return colabs;
+    }
   }
 }
 </script>
@@ -65,7 +76,6 @@ div.profiletop  {
       height: 150px;
 
       background-size: cover;
-      background-image: url(https://img.freepik.com/vetores-gratis/imagens-animadas-abstratas-neon-lines_23-2148344065.jpg?size=626&ext=jpg.jpg);
     }
 
     a.button {

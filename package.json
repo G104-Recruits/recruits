@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
+    "watch": "vue-cli-service build --watch --dest D:/wamp/www/recruits",
     "build": "vue-cli-service build"
   },
   "dependencies": {
@@ -14,6 +15,7 @@
     "core-js": "^3.6.4",
     "jquery": "^3.5.1",
     "vue": "^2.6.11",
+    "vue-animate-css": "^1.0.0",
     "vue-router": "^3.1.6"
   },
   "devDependencies": {

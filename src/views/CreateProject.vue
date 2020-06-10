@@ -46,7 +46,7 @@ export default {
       var vm = this;
 
       $.ajax({
-        url: "https://masrecruits.000webhostapp.com/api/create_project.php",
+        url: vm.$root.apiPath + "create_project.php",
         data: $('form#createProject').serializeArray(),
         method: "GET",
         complete: function() {
@@ -59,10 +59,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+div.create {
+  text-align: center;
+}
+
 form {
   width: 30%;
   max-width: 400px;
   padding: 10px;
+  text-align: left;
+  display: inline-block;
 
   h1 {
     font-weight: 500;

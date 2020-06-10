@@ -7,7 +7,7 @@
     <img src="@/assets/logo.png" alt="">
 
     <div class="login right" v-if="!$root.auth.loggedin">
-      <a href="https://github.com/login/oauth/authorize?client_id=bf3d8fb7fa3c22212ce2">
+      <a :href="'https://github.com/login/oauth/authorize?client_id='+$root.clientIds[1]">
         <div class="button shadow">
           <p>Log In</p>
           <font-awesome-icon :icon="['fab', 'github']" size="lg" />
@@ -96,6 +96,10 @@ div#nav {
   }
 
   div.login {
+    a {
+      text-decoration: none;
+    }
+    
     div.button {
       height: 100%;
       display: table;
